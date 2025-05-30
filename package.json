@@ -1,0 +1,25 @@
+{
+  "name": "playwright-demo-architecture",
+  "version": "1.0.0",
+  "description": "Demo project for Playwright architecture",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bigvoin/Playwright-Demo-Architecture.git"
+  },
+  "author": "Nikolay Gachev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bigvoin/Playwright-Demo-Architecture/issues"
+  },
+  "homepage": "https://github.com/bigvoin/Playwright-Demo-Architecture#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.47.1",
+    "@types/node": "^20.14.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "typescript": "^5.4.3"
+  }
+}

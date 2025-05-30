@@ -1,6 +1,7 @@
 import { test as base } from '@playwright/test';
 import BasePage from '../pageobjects/base.page';
 import ContactPage from '../pageobjects/contact.page';
+import { PageRoutes } from "../utils/utils";
 
 type Pages = {
     basePage: BasePage;
@@ -19,7 +20,7 @@ export const test = base.extend<BaseFixture>({
             contactPage: new ContactPage(page)
         }
 
-        await pages.basePage.openUrl('https://blankfactor.com/');
+        await pages.basePage.openUrl(PageRoutes.domain());
         await use(pages);
 
     }

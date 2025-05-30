@@ -16,12 +16,14 @@ export interface TextInputFieldOptions {
 export default class BasePage {
 
     private readonly locLetsTalkButton: Locator;
+    private readonly basePage: Page;
 
     /**
      * BasePage constructor.
      * @param { Page } page
      */
     constructor( page: Page) {
+        this.basePage = page;
         this.locLetsTalkButton = page.getByText("Let's talk");
     }
 
@@ -39,7 +41,7 @@ export default class BasePage {
        private async clearInput(input: Locator) {
         await input.click({ clickCount: 3, delay: 50 });
         await this.sleep(500);
-        await this.page.keyboard.press('Backspace');
+        await this.basePage.keyboard.press('Backspace');
     }
 
     /**
@@ -82,7 +84,7 @@ export default class BasePage {
      */
     async openUrl(url: string) {
         await test.step(`opens given url:${url}`, async () => {
-            await this.page.goto(url);
+            await this.basePage.goto(url);
         });
     }
 
@@ -93,7 +95,7 @@ export default class BasePage {
      async checkUrl(url: string) {
         await test.step(`checks given url:${url}`, async () => {
             const baseUrl = 'https://blankfactor.com/';
-            await expect(this.page).toHaveURL(`${baseUrl}${url}`);
+            await expect(this.basePage).toHaveURL(`${baseUrl}${url}`);
         });
     }
 
@@ -102,7 +104,7 @@ export default class BasePage {
      */
     async refresh() {
         await test.step('refreshes page', async () => {
-            await this.page.reload({ waitUntil: 'domcontentloaded' });
+            await this.basePage.reload({ waitUntil: 'domcontentloaded' });
         });
     }
 
@@ -111,7 +113,7 @@ export default class BasePage {
      */
     async back() {
         await test.step('click page "Back" button', async () => {
-            await this.page.goBack();
+            await this.basePage.goBack();
         });
     }
 }

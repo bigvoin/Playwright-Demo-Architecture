@@ -1,0 +1,86 @@
+name: Shard image generator
+on:
+  workflow_dispatch:
+    inputs:
+      builder_branch:
+        description: Which branch to use the docker container
+        required: true
+        default: master
+
+jobs:
+  start-current-ci:
+    name: Start EC2 instances
+    runs-on: ubuntu-latest
+    outputs:
+      label: ${{ steps.start-ec2-current-image.outputs.label }}
+      ec2-instance-id: ${{ steps.start-ec2-current-image.outputs.ec2-instance-id }}
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Start EC2s with current CI image
+        id: start-ec2-current-image
+        uses: SiteGround/ec2-github-runner@v1.4
+        with:
+          number-of-instances: 6
+          mode: start
+          github-token: ${{ secrets.GH_RUNNER_ADD_TOKEN }}
+          ec2-image-id: ${{ secrets.ECOM_EC2_GITHUB_RUNNER_AMI_ID }}
+          ec2-instance-type: m7a.4xlarge
+          subnet-id: ${{ secrets.ECOM_EC2_SUBNET_ID }}
+          security-group-id: ${{ secrets.ECOM_EC2_SECURITY_GROUP_ID }}
+          aws-resource-tags: >
+            [
+              {"Key": "Project", "Value": "ecom"}
+            ]
+  execute-tests:
+    name: Execute playwright tests on EC2 instance
+    needs: start-current-ci
+    runs-on: ${{ needs.start-current-ci.outputs.label }}
+    steps:
+      - name: Pull latest e2e image
+        run: sudo -H -u ubuntu bash -c "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 355580574270.dkr.ecr.eu-central-1.amazonaws.com && docker pull 355580574270.dkr.ecr.eu-central-1.amazonaws.com/ecom.playwright-sb:latest"
+      - name: Capture start time
+        run: echo "start_time=$(date +%s)" >> $GITHUB_ENV
+      - name: Run the tests on docker container
+        run: sudo -H -u ubuntu bash -c "eval \`ssh-agent\` && /home/ubuntu/bin/ecombench.cli test:generate-builder-images --branch=${{ github.event.inputs.e2e_branch }} --shard=${{ matrix.shards }}/6"
+      - name: Capture end time and duration
+        run: |
+          end_time=$(date +%s)
+          duration=$((end_time - start_time))
+          echo $duration > duration.txt
+      - name: Upload duration artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: duration-${{ matrix.shards }}.txt
+          path: duration.txt
+      - name: Create HTML report from blob
+        run: ls -la && echo "$UID" && mkdir html-reports && sudo chown -R 1000:1000 all-blob-reports html-reports && docker run --env PLAYWRIGHT_HTML_OPEN='never' --rm -v ./all-blob-reports:/tests/all-blob-reports -v ./html-reports:/tests/playwright-report 355580574270.dkr.ecr.eu-central-1.amazonaws.com/ecom.playwright-sb:latest playwright merge-reports --reporter=html ./all-blob-reports/
+      - name: Report results
+        run: |
+          echo "HTML report: https://ecom:super_1337_sg_store@d31ivy2d67xjo0.cloudfront.net/e2e/${{ steps.generate_results_dir.outputs.results_dir }}/html/index.html"
+  stop-current-ci:
+    name: Stop EC2 shard instances
+    needs:
+      - start-current-ci
+      - execute-tests
+    runs-on: ubuntu-latest
+    if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
+    steps:
+      - name: Configure AWS credentials
+        uses: SiteGround/configure-aws-credentials@v1.0
+        with:
+          aws-access-key-id: ${{ secrets.AWS_GITHUB_RUNNER_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_GITHUB_RUNNER_KEY_SECRET }}
+          aws-region: eu-central-1
+      - name: Stop EC2 runner
+        uses: SiteGround/ec2-github-runner@v1.4
+        with:
+          mode: stop
+          github-token: ${{ secrets.GH_RUNNER_ADD_TOKEN }}
+          label: ${{ needs.start-current-ci.outputs.label }}
+          ec2-instance-id: ${{ needs.start-current-ci.outputs.ec2-instance-id }}
+

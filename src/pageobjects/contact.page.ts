@@ -48,9 +48,9 @@ export default class ContactPage {
 
     /**
      * Fill Contact Form details
-     * @param { ContactPageDetails } details contact details 
+     * @param { Partial<ContactPageDetails> } details contact details
      */
-    async edit(details: ContactPageDetails) {
+    async edit(details: Partial<ContactPageDetails>) {
         await test.step('fill contact details', async () => {
             details.firstNameField && await this.uiFirstNameField.type(details.firstNameField);
             details.lastNameField && await this.uiLastNameField.type(details.lastNameField);
@@ -64,9 +64,9 @@ export default class ContactPage {
 
     /**
      * Validate Contact Form details
-     * @param { ContactPageDetails } details contact details 
+     * @param { Partial<ContactPageDetails> } details contact details
      */
-    async validateFields(details: ContactPageDetails) {
+    async validateFields(details: Partial<ContactPageDetails>) {
         await test.step('fill contact details', async () => {
             details.emailField && await this.uiEmailField.checkValidation('Please enter a valid phone number.');
             details.phoneField && await this.uiPhoneField.checkValidation('Please enter a valid email.');
