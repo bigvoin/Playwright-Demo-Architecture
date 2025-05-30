@@ -1,7 +1,7 @@
 name: Build
 on:
   push:
-    branches: [ master, staging ]
+    branches: [ main ]
     paths-ignore:
       - '.github/workflows/**'
   workflow_dispatch:
@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS credentials
-        uses: SiteGround/configure-aws-credentials@v1.0
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.ECR_E2E_IMAGE_UPLOADER_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.ECR_E2E_IMAGE_UPLOADER_KEY_SECRET }}
-          aws-region: eu-central-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
       - name: Login to Docker Repo
-        run: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 355580574270.dkr.ecr.eu-central-1.amazonaws.com
+        run: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 762593867198.dkr.ecr.eu-north-1.amazonaws.com/
       - uses: actions/checkout@v2
       - name: Add CI SSH Key to run npm install during build
         run: echo "${{ secrets.CI_USER_SSH_KEY_PRIVATE }}" > id_ed25519
@@ -36,6 +36,6 @@ jobs:
         run: |
           echo "Docker Tag: ${{ steps.determine_docker_tag.outputs.tag }}"
       - name: Build the image
-        run: docker build --target=ci -t 355580574270.dkr.ecr.eu-central-1.amazonaws.com/ecom.playwright-sb:${{ steps.determine_docker_tag.outputs.tag }} .
+        run: docker build --target=ci -t 762593867198.dkr.ecr.eu-north-1.amazonaws.com/demo.playwright:${{ steps.determine_docker_tag.outputs.tag }} .
       - name: Push the image
-        run: docker push 355580574270.dkr.ecr.eu-central-1.amazonaws.com/ecom.playwright-sb:${{ steps.determine_docker_tag.outputs.tag }}
+        run: docker push 762593867198.dkr.ecr.eu-north-1.amazonaws.com/demo.playwright:${{ steps.determine_docker_tag.outputs.tag }}

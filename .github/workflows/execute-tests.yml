@@ -20,7 +20,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: eu-north-1
       - name: Start EC2s with current CI image
         id: start-ec2-current-image
         uses: SiteGround/ec2-github-runner@v1.4
@@ -42,7 +42,7 @@ jobs:
     runs-on: ${{ needs.start-current-ci.outputs.label }}
     steps:
       - name: Pull latest e2e image
-        run: sudo -H -u ubuntu bash -c "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 355580574270.dkr.ecr.eu-central-1.amazonaws.com && docker pull 355580574270.dkr.ecr.eu-central-1.amazonaws.com/ecom.playwright-sb:latest"
+        run: sudo -H -u ubuntu bash -c "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 762593867198.dkr.ecr.eu-north-1.amazonaws.com && docker pull 762593867198.dkr.ecr.eu-north-1.amazonaws.com/demo.playwright:latest"
       - name: Capture start time
         run: echo "start_time=$(date +%s)" >> $GITHUB_ENV
       - name: Run the tests on docker container
