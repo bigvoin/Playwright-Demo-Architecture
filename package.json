@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/bigvoin/Playwright-Demo-Architecture#readme",
   "devDependencies": {
-    "@playwright/test": "^1.47.1",
+    "@playwright/test": "^1.51.1",
     "@types/node": "^20.14.2"
   },
   "dependencies": {
