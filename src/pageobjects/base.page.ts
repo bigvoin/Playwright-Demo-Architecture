@@ -1,5 +1,6 @@
 import test, { expect, Locator, Page } from "@playwright/test";
 import ButtonComponent from "../ui-components/button.component";
+import {PageRoutes} from "../utils/utils";
 
 /**
  * Text input options.
@@ -15,9 +16,12 @@ export interface TextInputFieldOptions {
  * Base page class
  */
 export default class BasePage {
-
-    private readonly uiBecomeClientButton: ButtonComponent;
+    // page object
     private readonly basePage: Page;
+    // ui-components
+    private readonly uiBecomeClientButton: ButtonComponent;
+    // locators
+    private readonly locThankYouForSubmit: Locator;
 
     /**
      * BasePage constructor.
@@ -26,8 +30,9 @@ export default class BasePage {
     constructor( page: Page) {
         this.basePage = page;
         this.uiBecomeClientButton = new ButtonComponent(page, {
-            locator: page.locator('.btn-small').filter({hasText: 'Become a client'})
+            locator: page.locator('.btn-small').filter({ hasText: 'Become a client' })
         });
+        this.locThankYouForSubmit = page.locator('h1').filter({ hasText: ' Thank you for your submission'});
     }
 
     /**
@@ -97,8 +102,9 @@ export default class BasePage {
      */
      async checkUrl(url: string) {
         await test.step(`checks given url:${url}`, async () => {
-            const baseUrl = 'https://blankfactor.com/';
-            await expect(this.basePage).toHaveURL(`${baseUrl}${url}`);
+            await this.sleep(1000);
+            await this.locThankYouForSubmit.waitFor({ state: "visible"});
+            await expect(this.basePage).toHaveURL(`${PageRoutes.domain()}${url}`);
         });
     }
 

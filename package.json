@@ -15,11 +15,12 @@
   },
   "homepage": "https://github.com/bigvoin/Playwright-Demo-Architecture#readme",
   "devDependencies": {
-    "@playwright/test": "^1.51.1",
-    "@types/node": "^20.14.2"
+    "@playwright/test": "=1.51.1",
+    "@types/node": "^20.14.2",
+    "typescript": "^5.4.3"
   },
   "dependencies": {
     "dotenv": "^16.5.0",
-    "typescript": "^5.4.3"
+    "playwright": "=1.51.1"
   }
 }

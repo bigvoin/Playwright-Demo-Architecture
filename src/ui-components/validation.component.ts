@@ -20,7 +20,7 @@ export default abstract class ValidationComponent extends BaseUiComponent implem
      */
     protected constructor(page: Page, attributes?: ElementAttributes ) {
         super(page, attributes);
-        this.locValidation = this.locBase.locator('.error-message');
+        this.locValidation = this.locBase.locator('..').locator('.error-message');
     }
 
     /**

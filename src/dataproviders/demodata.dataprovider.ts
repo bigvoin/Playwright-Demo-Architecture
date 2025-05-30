@@ -31,12 +31,13 @@ export const dpContactFormData: ContactFormDetailsData[] = [
     {
         testDetails: {
             tcid: 1,
-            description: 'automation test for submiting correct contact form details',
+            description: 'automation test for submit correct contact form details',
             enabled: true
         },
         contactDetails: {
             firstNameField: 'Test First Name',
             lastNameField: 'Last Name Test',
+            companyField: 'Test Company',
             emailField: 'testEmailmail@mail.com',
             phoneField: '099919912',
             aboutField: 'Test oasdkoasdkopasdskoadopasdkopa asopdkaspodkasop'
@@ -45,13 +46,14 @@ export const dpContactFormData: ContactFormDetailsData[] = [
     {
         testDetails: {
             tcid: 2,
-            description: 'automation test for submiting incorrect contact form email address',
+            description: 'automation test for submit incorrect contact form email address',
             enabled: true
         },
         contactDetails: {
             firstNameField: 'Test First Name',
             lastNameField: 'Last Name Test',
-            emailField: '0123012301230',
+            companyField: 'Test Company',
+            emailField: 'test@test.com',
             phoneField: '099919912',
             aboutField: 'Test oasdkoasdkopasdskoadopasdkopa asopdkaspodkasop'
         },
@@ -60,14 +62,15 @@ export const dpContactFormData: ContactFormDetailsData[] = [
     {
         testDetails: {
             tcid: 3,
-            description: 'automation test for submiting incorrect contact form phone number',
+            description: 'automation test for submit incorrect contact form phone number',
             enabled: true
         },
         contactDetails: {
             firstNameField: 'Test First Name',
             lastNameField: 'Last Name Test',
-            emailField: 'testEmailmail@mail.com',
-            phoneField: 'asddadadadsasda',
+            companyField: 'Test Company',
+            emailField: 'test@test.com',
+            phoneField: '099919912123131',
             aboutField: 'Test oasdkoasdkopasdskoadopasdkopa asopdkaspodkasop'
         },
         validation: true

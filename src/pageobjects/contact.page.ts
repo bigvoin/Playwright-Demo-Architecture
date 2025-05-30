@@ -43,7 +43,7 @@ export default class ContactPage {
         this.uiPhoneField = new TextInputComponent(page, { name: 'Phone' });
         this.locAboutFieldArea = page.getByPlaceholder('Tell us about your project*');
         this.uiGetStartedButton = new ButtonComponent(page, {
-            locator: page.locator('.btn').filter({ hasText: ' Get started '}) }
+            locator: page.locator('[type=submit]').filter({ hasText: ' Get started '}) }
         );
         this.locPolicyRadioButton = page.locator('#policy');
     }
@@ -70,8 +70,10 @@ export default class ContactPage {
      */
     async validateFields(details: Partial<ContactPageDetails>) {
         await test.step('fill contact details', async () => {
-            details.emailField && await this.uiEmailField.checkValidation('Please enter a valid phone number.');
-            details.phoneField && await this.uiPhoneField.checkValidation('Please enter a valid email.');
+            details.emailField &&
+                await this.uiEmailField.checkValidation(' Please enter a valid email address.');
+            details.phoneField &&
+                await this.uiPhoneField.checkValidation(' Please enter a valid phone number. ');
         });
     }
 
