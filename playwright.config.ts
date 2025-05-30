@@ -17,11 +17,10 @@ const config: PlaywrightTestConfig = {
          */
         timeout: 8000,
     },
-    globalSetup: './src/global-setup.ts',
     /* Run tests in files in parallel */
     fullyParallel: false,
     /* Retry on CI only */
-    retries: 1,
+    retries: 0,
     /* Opt out of parallel tests on CI. */
     workers: 1,
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -32,16 +31,11 @@ const config: PlaywrightTestConfig = {
         actionTimeout: 8000,
         /* Record video on test fail */
         video: 'retain-on-failure',
-        testIdAttribute: 'data-e2e',
         viewport: { width: 1920, height: 1080 },
         trace: 'retain-on-failure'
     },
     /* Configure projects for major browsers */
     projects: [
-        {
-            name: 'setup',
-            testDir: './src/setup/'
-        },
         {
             name: 'chromium',
             testDir: './tests',
@@ -49,8 +43,7 @@ const config: PlaywrightTestConfig = {
                 ...devices['Desktop Chrome'],
                 locale: "en-GB",
                 viewport: { width: 1920, height: 1080 },
-            },
-            dependencies: ['setup'],
+            }
         }
     ]
 };

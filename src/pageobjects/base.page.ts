@@ -1,4 +1,5 @@
 import test, { expect, Locator, Page } from "@playwright/test";
+import ButtonComponent from "../ui-components/button.component";
 
 /**
  * Text input options.
@@ -15,7 +16,7 @@ export interface TextInputFieldOptions {
  */
 export default class BasePage {
 
-    private readonly locLetsTalkButton: Locator;
+    private readonly uiBecomeClientButton: ButtonComponent;
     private readonly basePage: Page;
 
     /**
@@ -24,14 +25,16 @@ export default class BasePage {
      */
     constructor( page: Page) {
         this.basePage = page;
-        this.locLetsTalkButton = page.getByText("Let's talk");
+        this.uiBecomeClientButton = new ButtonComponent(page, {
+            locator: page.locator('.btn-small').filter({hasText: 'Become a client'})
+        });
     }
 
     /**
-     * Click on lets talk button
+     * Click on become partner button.
      */
-    async clickLetsTalk() {
-        await this.locLetsTalkButton.click();
+    async clickBecomePartner() {
+        await this.uiBecomeClientButton.click();
     }
 
     /**

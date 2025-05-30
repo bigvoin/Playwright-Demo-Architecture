@@ -36,13 +36,15 @@ export default class ContactPage {
      * @param { Page } page
      */
     constructor( page: Page) {
-        this.uiFirstNameField = new TextInputComponent(page, { label: 'First_name__c' });
-        this.uiLastNameField = new TextInputComponent(page, { label: 'Last_Name__c' });
-        this.uiCompanyField = new TextInputComponent(page, { label: 'Company' });
-        this.uiEmailField = new TextInputComponent(page, { label: 'Email' });
-        this.uiPhoneField = new TextInputComponent(page, { label: 'Phone' });
+        this.uiFirstNameField = new TextInputComponent(page, { name: 'First_name__c' });
+        this.uiLastNameField = new TextInputComponent(page, { name: 'Last_Name__c' });
+        this.uiCompanyField = new TextInputComponent(page, { name: 'Company' });
+        this.uiEmailField = new TextInputComponent(page, { name: 'Email' });
+        this.uiPhoneField = new TextInputComponent(page, { name: 'Phone' });
         this.locAboutFieldArea = page.getByPlaceholder('Tell us about your project*');
-        this.uiGetStartedButton = new ButtonComponent(page, { class: "ajax-spinner" } );
+        this.uiGetStartedButton = new ButtonComponent(page, {
+            locator: page.locator('.btn').filter({ hasText: ' Get started '}) }
+        );
         this.locPolicyRadioButton = page.locator('#policy');
     }
 

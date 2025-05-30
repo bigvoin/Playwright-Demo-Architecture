@@ -44,7 +44,7 @@ export const dpContactFormData: ContactFormDetailsData[] = [
     },
     {
         testDetails: {
-            tcid: 1,
+            tcid: 2,
             description: 'automation test for submiting incorrect contact form email address',
             enabled: true
         },
@@ -59,7 +59,7 @@ export const dpContactFormData: ContactFormDetailsData[] = [
     },
     {
         testDetails: {
-            tcid: 1,
+            tcid: 3,
             description: 'automation test for submiting incorrect contact form phone number',
             enabled: true
         },
