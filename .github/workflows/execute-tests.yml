@@ -1,4 +1,4 @@
-name: Shard image generator
+name: Execute Playwright tests on CI
 
 on:
   workflow_dispatch:
