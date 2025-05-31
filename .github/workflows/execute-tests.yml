@@ -65,8 +65,8 @@ jobs:
             export AWS_DEFAULT_REGION="eu-north-1"
 
             aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 762593867198.dkr.ecr.eu-north-1.amazonaws.com
-            docker pull 762593867198.dkr.ecr.eu-north-1.amazonaws.com/demo.playwright:latest
-            docker run --rm 762593867198.dkr.ecr.eu-north-1.amazonaws.com/demo.playwright:latest playwright test --project=chromium
+            docker pull 762593867198.dkr.ecr.eu-north-1.amazonaws.com/demo.playwright:main
+            docker run --rm 762593867198.dkr.ecr.eu-north-1.amazonaws.com/demo.playwright:main playwright test --project=chromium
           EOF
 
       - name: Terminate EC2 instance
