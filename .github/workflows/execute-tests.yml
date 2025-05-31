@@ -56,7 +56,7 @@ jobs:
 
       - name: Run Playwright test via SSH + Docker
         run: |
-          printf '%s\n' "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > key.pem
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > key.pem
           chmod 600 key.pem
           
           ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ steps.get-ip.outputs.public-ip }} << 'EOF'
