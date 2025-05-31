@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REGION: eu-north-1
-      INSTANCE_TYPE: t3.micro
+      INSTANCE_TYPE: t3.medium
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
