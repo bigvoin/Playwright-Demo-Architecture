@@ -42,6 +42,7 @@ jobs:
       - name: Wait for EC2 to be running
         run: |
           aws ec2 wait instance-status-ok --instance-ids ${{ env.INSTANCE_ID }}
+          sleep 10
 
       - name: Get EC2 Public IP
         id: get-ip
