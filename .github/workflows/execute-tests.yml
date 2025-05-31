@@ -33,6 +33,7 @@ jobs:
             --key-name ${{ secrets.EC2_SSH_KEY_NAME }} \
             --subnet-id ${{ secrets.NEW_EC2_SUBNET_ID }} \
             --security-group-ids ${{ secrets.NEW_EC2_SECURITY_GROUP_ID }} \
+            --block-device-mappings '[{"DeviceName":"/dev/xvda","Ebs":{"VolumeSize":30}}]' \
             --query "Instances[0].InstanceId" \
             --output text)
           
