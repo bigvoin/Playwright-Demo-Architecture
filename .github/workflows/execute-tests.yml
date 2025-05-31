@@ -67,12 +67,14 @@ jobs:
           
             sudo apt update && sudo apt install -y cloud-guest-utils e2fsprogs
           
-            ROOT_DEV=$(df / | tail -1 | awk '{print $1}')
-            ROOT_DEV_BASE=$(echo $ROOT_DEV | sed -E 's/p?[0-9]+$//')
-            PART_NUM=$(echo $ROOT_DEV | grep -o '[0-9]*$')
-  
-            sudo growpart $ROOT_DEV_BASE $PART_NUM
-            sudo resize2fs $ROOT_DEV
+            ROOT_PART=$(findmnt / -o SOURCE -n)
+            ROOT_DEV_BASE=$(lsblk -no pkname "$ROOT_PART" | head -n1)
+            ROOT_DEV="/dev/$ROOT_DEV_BASE"
+            PART_NUM=$(echo "$ROOT_PART" | grep -o '[0-9]*$')
+
+            echo "Expanding $ROOT_DEV partition $PART_NUM..."
+            sudo growpart "$ROOT_DEV" "$PART_NUM"
+            sudo resize2fs "$ROOT_PART"
 
             aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 762593867198.dkr.ecr.eu-north-1.amazonaws.com
             docker pull 762593867198.dkr.ecr.eu-north-1.amazonaws.com/demo.playwright:main
