@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REGION: eu-north-1
-      INSTANCE_TYPE: m7a.4xlarge
+      INSTANCE_TYPE: t3.micro
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -56,8 +56,8 @@ jobs:
 
       - name: Run Playwright test via SSH + Docker
         run: |
-          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > key.pem
-          chmod 600 key.pem
+          printf '%s\n' "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > key.pem
+          chmod 600 key.pe
           
           ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ steps.get-ip.outputs.public-ip }} << 'EOF'
             aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 762593867198.dkr.ecr.eu-north-1.amazonaws.com
